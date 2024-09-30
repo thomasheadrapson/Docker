@@ -13,7 +13,7 @@ def run_test(arguments: Dict[str,str], expected_status_code: int, route: str) ->
 
     output = '''
     ============================
-        Authentication test
+        Authorisation test
     ============================
 
     request done at "/{route}/{route_base}/"
