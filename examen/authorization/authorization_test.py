@@ -4,10 +4,10 @@ import requests
 
 
 
-def run_test(arguments: Dict[str,str], expected_status_code: int) -> Literal[True]:
+def run_test(arguments: Dict[str,str], expected_status_code: int, route: str) -> Literal[True]:
     # requête
     r = requests.get(
-        url = f'http://{address}:{port}/{route}/',
+        url = f'http://{address}:{port}/{route}/{route_base}/',
         params = arguments
         )
 
@@ -16,7 +16,7 @@ def run_test(arguments: Dict[str,str], expected_status_code: int) -> Literal[Tru
         Authentication test
     ============================
 
-    request done at "/{route}/"
+    request done at "/{route}/{route_base}/"
     {arguments}
 
     expected result = {expected_status_code}
@@ -35,7 +35,7 @@ def run_test(arguments: Dict[str,str], expected_status_code: int) -> Literal[Tru
         test_status = 'SUCCESS'
     else:
         test_status = 'FAILURE'
-    print(output.format(status_code = status_code, expected_status_code = expected_status_code, test_status = test_status, route = route, arguments = arguments))
+    print(output.format(status_code = status_code, expected_status_code = expected_status_code, test_status = test_status, route = route, route_base = route_base, arguments = arguments))
 
     # impression dans un fichier
     if os.environ.get('LOG') == 1:
@@ -51,21 +51,20 @@ address = 'localhost'
 port = 8001
 
 # route
-route = "permissions"
+route_base = "sentiment"
+routes = ["v1","v2"]
+
 
 # arguments_list & expected_status_codes
 
 arguments_list = [{"username":"alice","password":"wonderland"},]
-status_codes_list = [200,]
-
+status_codes_list = [(200, 200),]
 arguments_list.append({"username":"bob", "password":"builder"})
-status_codes_list.append(200)
-
-arguments_list.append({"username":"clementine", "password":"mandarine"})
-status_codes_list.append(403)
+status_codes_list.append((200, 403),)
 
 
-for (args, code) in zip(arguments_list, status_codes_list):
-    run_test(args, code)
+for args, codes in zip(arguments_list, status_codes_list):
+    for route, code in zip(routes, codes):
+        run_test(args, code, route)
 
 
