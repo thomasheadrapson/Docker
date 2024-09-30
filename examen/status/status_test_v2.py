@@ -12,5 +12,5 @@ def make_request(address: "str", port: "int", params: "dict[str, str]", ):
 def test_status() -> None:
     url = f"http://{address}:{port}/status"
     r = request.get(url = url)
-    assert (r.) == 1
+    assert (r) == 1
 
