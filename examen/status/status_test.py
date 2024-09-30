@@ -6,7 +6,7 @@ import requests
 address = 'localhost'
 
 # port de l'API
-port = 8000
+port = 8001
 
 # arguments
 arguments : Dict[str,str] = dict()
@@ -20,7 +20,7 @@ expected_status_code = 200
 
 # requête
 r = requests.get(
-    url = f'http://{address}:{port}/{route}',
+    url = f'http://{address}:{port}/{route}/',
     params = arguments
     )
 
@@ -29,7 +29,7 @@ output = '''
     Authentication test
 ============================
 
-request done at "/{route}"
+request done at "/{route}/"
 {arguments}
 
 expected result = {expected_status_code}
