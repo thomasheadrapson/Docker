@@ -1,26 +1,26 @@
 import os
-from typing import Dict, Literal
+from typing import Dict
 import requests
 
 
 
-def run_test(arguments: Dict[str,str], expected_status_code: int, route: str) -> Literal[True]:
+def run_test(arguments: Dict[str,str], expected_status_code: int, route: str):
     # requête
     r = requests.get(
-        url = f'http://{address}:{port}/{route}/{route_base}/',
+        url = f'http://{address}:{port}/{route}/',
         params = arguments
         )
 
     output = '''
     ============================
-        Authorisation test
+        Authoriszation test
     ============================
 
-    request done at "/{route}/{route_base}/"
+    request done at "/{route}/"
     {arguments}
 
     expected result = {expected_status_code}
-    actual restult = {status_code}
+    actual result = {status_code}
 
     ==>  {test_status}
 
@@ -35,24 +35,24 @@ def run_test(arguments: Dict[str,str], expected_status_code: int, route: str) ->
         test_status = 'SUCCESS'
     else:
         test_status = 'FAILURE'
-    print(output.format(status_code = status_code, expected_status_code = expected_status_code, test_status = test_status, route = route, route_base = route_base, arguments = arguments))
+    output_text = output.format(status_code = status_code, expected_status_code = expected_status_code, test_status = test_status, route = route, arguments = arguments)
 
     # impression dans un fichier
-    if os.environ.get('LOG') == 1:
-        with open('api_test.log', 'a') as file:
-            file.write(output)
+    if os.environ.get('LOG') == "1":
+        print(output_text)
+        with open('/home/logs/api_test.log', 'a') as file:
+            file.write(output_text)
     
     return True
 
 # adresse de l'API
-address = 'localhost'
+address = '172.18.0.2'
 
 # port de l'API
-port = 8001
+port = 8000
 
 # route
-route_base = "sentiment"
-routes = ["v1","v2"]
+models = ["v1","v2"]
 
 
 # arguments_list & expected_status_codes
@@ -64,7 +64,8 @@ status_codes_list.append((200, 403),)
 
 
 for args, codes in zip(arguments_list, status_codes_list):
-    for route, code in zip(routes, codes):
+    for model, code in zip(models, codes):
+        route = f"{model}/sentiment"
         run_test(args, code, route)
 
 

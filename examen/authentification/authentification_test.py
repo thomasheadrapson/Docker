@@ -1,11 +1,13 @@
 import os
-from typing import Dict, Literal
+from typing import Dict
 import requests
 
 
 
-def run_test(arguments: Dict[str,str], expected_status_code: int) -> Literal[True]:
+def run_test(arguments: Dict[str,str], expected_status_code: int, route: str):
+    
     # requête
+    
     r = requests.get(
         url = f'http://{address}:{port}/{route}/',
         params = arguments
@@ -20,7 +22,7 @@ def run_test(arguments: Dict[str,str], expected_status_code: int) -> Literal[Tru
     {arguments}
 
     expected result = {expected_status_code}
-    actual restult = {status_code}
+    actual result = {status_code}
 
     ==>  {test_status}
 
@@ -35,20 +37,22 @@ def run_test(arguments: Dict[str,str], expected_status_code: int) -> Literal[Tru
         test_status = 'SUCCESS'
     else:
         test_status = 'FAILURE'
-    print(output.format(status_code = status_code, expected_status_code = expected_status_code, test_status = test_status, route = route, arguments = arguments))
+        
+    output_text = output.format(status_code = status_code, expected_status_code = expected_status_code, test_status = test_status, route = route, arguments = arguments)
 
     # impression dans un fichier
-    if os.environ.get('LOG') == 1:
-        with open('api_test.log', 'a') as file:
-            file.write(output)
+    if os.environ.get('LOG') == "1":
+        print(output_text)
+        with open('/home/logs/api_test.log', 'a') as file:
+            file.write(output_text)
     
     return True
 
 # adresse de l'API
-address = 'localhost'
+address = '172.18.0.2'
 
 # port de l'API
-port = 8001
+port = 8000
 
 # route
 route = "permissions"
@@ -66,6 +70,6 @@ status_codes_list.append(403)
 
 
 for (args, code) in zip(arguments_list, status_codes_list):
-    run_test(args, code)
+    run_test(args, code, route)
 
 
