@@ -1,0 +1,23 @@
+services:
+  status:
+    image: status:latest
+    container_name: status
+    networks:
+      - sentiment_nw
+    volumes:
+      - api_logs:/home/logs
+    environment:
+      LOG: "1"
+  authentification:
+    image: authentification:latest
+    container_name: authentification
+    networks:
+      - sentiment_nw
+    volumes:
+      - api_logs:/home/logs
+    environment:
+      LOG: "1"
+  
+networks:
+  sentiment_nw:
+

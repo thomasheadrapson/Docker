@@ -3,9 +3,7 @@ from typing import Dict
 import requests
 import math
 
-
-
-def run_test(credentials: Dict[str,str], expected_status_code: int, expected_score: int, route: str, sentence: str):
+def run_test(credentials: Dict[str,str], expected_status_code: int, route: str, port: int, sentence: str = "", expected_score: int = 0):
     
     # requête
     arguments = credentials.copy()
@@ -81,4 +79,4 @@ scores_list = [1, -1]
 for model in models:
     route = f"{model}/sentiment"
     for sentence, score in zip(sentence_list, scores_list):
-        run_test(credentials, 200, score, route, sentence)
+        run_test(credentials, 200, route, port, sentence, score)

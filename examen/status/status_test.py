@@ -49,7 +49,12 @@ if status_code == expected_status_code:
 else:
     test_status = 'FAILURE'
     
-output_text = output.format(status_code = status_code, expected_status_code = expected_status_code, test_status = test_status, route = route, arguments = arguments)
+output_text = output.format(
+    status_code = status_code, 
+    expected_status_code = expected_status_code, 
+    test_status = test_status, 
+    route = route, 
+    arguments = arguments)
 
 
 # impression dans un fichier
