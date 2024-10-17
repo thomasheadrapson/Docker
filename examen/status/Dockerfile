@@ -10,6 +10,7 @@ RUN apt-get update && \
         flask==2.0.0 \
         requests
 
+        
 ADD ./status_test.py status_test.py
 
 

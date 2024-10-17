@@ -3,7 +3,7 @@ from typing import Dict
 import requests
 
 # adresse de l'API
-address = '172.18.0.2'
+address = 'sentiment'
 
 # port de l'API
 port = 8000

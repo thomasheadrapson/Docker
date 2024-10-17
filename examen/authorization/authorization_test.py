@@ -46,7 +46,7 @@ def run_test(arguments: Dict[str,str], expected_status_code: int, route: str):
     return True
 
 # adresse de l'API
-address = '172.18.0.2'
+address = 'sentiment'
 
 # port de l'API
 port = 8000

@@ -1,23 +1,61 @@
 services:
-  status:
-    image: status:latest
-    container_name: status
+  sentiment:
+    image: datascientest/fastapi:1.0.0
+    container_name: sentiment_api
     networks:
-      - sentiment_nw
+      - sentimentnw
+    ports:
+      - "8000:8000"
+  status:
+    depends_on:
+      sentiment:
+        condition: service_started
+    image: status:latest
+    container_name: status_test
+    networks:
+      - sentimentnw
     volumes:
-      - api_logs:/home/logs
+      - sentimentv:/home/logs
     environment:
       LOG: "1"
   authentification:
+    depends_on:
+      sentiment:
+        condition: service_started
     image: authentification:latest
-    container_name: authentification
+    container_name: authentification_test
     networks:
-      - sentiment_nw
+      - sentimentnw
     volumes:
-      - api_logs:/home/logs
+      - sentimentv:/home/logs
     environment:
       LOG: "1"
-  
+  authorization:
+    depends_on:
+      sentiment:
+        condition: service_started
+    image: authorization:latest
+    container_name: authorization_test
+    networks:
+      - sentimentnw
+    volumes:
+      - sentimentv:/home/logs
+    environment:
+      LOG: "1"
+  content:
+    depends_on:
+      sentiment:
+        condition: service_started
+    image: content:latest
+    container_name: content_test
+    networks:
+      - sentimentnw
+    volumes:
+      - sentimentv:/home/logs
+    environment:
+      LOG: "1"
 networks:
-  sentiment_nw:
+  sentimentnw:
+volumes:
+  sentimentv:
 
