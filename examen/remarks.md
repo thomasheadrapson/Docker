@@ -71,4 +71,8 @@ The environment variable LOG
         environment:
             LOG: ${LOG}
 
-* which passes this variable as environment variable for the container of the test service
+* which passes this variable to the container as an environment variable internal to the container of the test service.
+
+
+The build commands in setup.sh can be transfered to the docker compose file by using the "build" and "pull_policy:build" options for each service.
+These are included in the compose file but are commented out because it was specified to include docker build commands in the setup.sh script file. 
