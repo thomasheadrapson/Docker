@@ -10,52 +10,59 @@ services:
     depends_on:
       sentiment:
         condition: service_started
-    image: status:latest
+    image: status
+    #pull_policy: build
+    #build: ./status
     container_name: status_test
     networks:
       - sentimentnw
     volumes:
-      - sentimentv:/home/logs
+      - .:/home/logs
     environment:
-      LOG: "1"
+      LOG: ${LOG}
   authentification:
     depends_on:
-      sentiment:
-        condition: service_started
+      status:
+        condition: service_completed_successfully
+    #build: ./authentification
     image: authentification:latest
+    #pull_policy: build
     container_name: authentification_test
     networks:
       - sentimentnw
     volumes:
-      - sentimentv:/home/logs
+      - .:/home/logs
     environment:
-      LOG: "1"
+      LOG: ${LOG}
   authorization:
     depends_on:
-      sentiment:
-        condition: service_started
+      authentification:
+        condition: service_completed_successfully
+    #build: ./authorization
     image: authorization:latest
+    #pull_policy: build
     container_name: authorization_test
     networks:
       - sentimentnw
     volumes:
-      - sentimentv:/home/logs
+      - .:/home/logs
     environment:
-      LOG: "1"
+      LOG: ${LOG}
   content:
     depends_on:
-      sentiment:
-        condition: service_started
+      authorization:
+        condition: service_completed_successfully
+    #build: ./content
     image: content:latest
+    #pull_policy: build
     container_name: content_test
     networks:
       - sentimentnw
     volumes:
-      - sentimentv:/home/logs
+      - .:/home/logs
     environment:
-      LOG: "1"
+      LOG: ${LOG}
 networks:
   sentimentnw:
-volumes:
-  sentimentv:
+
 
